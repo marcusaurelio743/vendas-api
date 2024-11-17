@@ -21,12 +21,12 @@ public class ProdutoController {
 	@PostMapping
 	public ProdutoFormRequest salvar(@RequestBody ProdutoFormRequest produto) {
 		
-		Produto EntidadeProduto = new Produto(produto);
+		Produto EntidadeProduto  = produto.toModel();
 		
 		produtoRepository.save(EntidadeProduto);
-		System.out.println(EntidadeProduto);
 		
-		return produto;
+		
+		return ProdutoFormRequest.fromModel(EntidadeProduto);
 	}
 
 }

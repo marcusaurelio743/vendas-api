@@ -1,6 +1,7 @@
 package vendasapi.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -8,8 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import vendasapi.rest.produtos.ProdutoFormRequest;
+import javax.persistence.PrePersist;
 
 @Entity
 public class Produto {
@@ -26,6 +26,11 @@ public class Produto {
 
 	private BigDecimal preco;
 	
+	@Column(name = "data_cadastro")
+	private LocalDate dataCadastro;
+	
+	
+	
 	
 
 	public Produto() {
@@ -41,12 +46,30 @@ public class Produto {
 		this.descricao = descricao;
 		this.preco = preco;
 	}
-	public Produto( ProdutoFormRequest formRequest) {
-		
-		this.nome = formRequest.getNome();
-		this.sku = formRequest.getSku();
-		this.descricao = formRequest.getDescricao();
-		this.preco = formRequest.getPreco();
+	
+	public Produto(Long id, String nome, String sku, String descricao, BigDecimal preco) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.sku = sku;
+		this.descricao = descricao;
+		this.preco = preco;
+	}
+
+	@PrePersist
+	public void prePersist() {
+		setDataCadastro(LocalDate.now());
+	}
+	
+
+
+	public LocalDate getDataCadastro() {
+		return dataCadastro;
+	}
+
+
+	public void setDataCadastro(LocalDate dataCadastro) {
+		this.dataCadastro = dataCadastro;
 	}
 
 
